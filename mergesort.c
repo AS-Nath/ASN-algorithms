@@ -49,6 +49,7 @@ void merge(int* arr1, int l1, int* arr2, int l2) {
     for (int i = 0; i < l1 + l2; i++) {
         *(arr1 + i) = merged[i]; 
     }
+    free(merged); 
 }
 
 void sort(int* arr, int n, int l, int r) {
