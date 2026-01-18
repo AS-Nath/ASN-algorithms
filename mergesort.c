@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-int* sort(int* arr, int l);
-int* merge(int* arr1, int l1, int* arr2, int l2);
+void sort (int* arr, int n, int l, int r);
+void merge(int* arr1, int l1, int* arr2, int l2);
 
 int main(void) {
     int n;
@@ -12,52 +12,55 @@ int main(void) {
     for (int i = 0; i < n; i++) {
         scanf("%d", arr + i);
     }
-    sort(arr, n); 
+    sort(arr, n, 0, n - 1); 
     for (int i = 0; i < n; i++) {
         printf("%d ", arr[i]);
     }
     printf("\n");
 }
 
-int* sort (int* arr, int l) {
-    if (l == 1) {
-        return arr;
-    }
-    int mid = (int)(l / 2);
-    int* left = arr;
-    int* right = arr + mid;
-    int l1 = mid;
-    int l2 = l - mid; 
-    left = sort(left, l1); 
-    right = sort(right, l2);
-    arr = merge(left, l1, right, l2); 
-    return arr;
-}
-
-int* merge(int* arr1, int l1, int* arr2, int l2) {
-    int* r_arr = (int *)calloc(l1 + l2, sizeof(int)); 
-    int i1 = 0; int i2 = 0;
-    int i = 0;
-    while (i1 < l1 && i2 < l2) {
-        if (arr1[i1] < arr2[i2]) {
-            r_arr[i] = arr1[i1];
-            i1 += 1;
+void merge(int* arr1, int l1, int* arr2, int l2) {
+    int c1 = 0;
+    int c2 = 0;
+    int c = 0;
+    int* merged = (int *)calloc(l1 + l2, sizeof(int)); 
+    while (c < l1 + l2 && c1 < l1 && c2 < l2) {
+        if (*(arr1 + c1) < *(arr2 + c2)) {
+            merged[c] = *(arr1 + c1);
+            c1 += 1;
+            c += 1;
         }
         else {
-            r_arr[i] = arr2[i2];
-            i2 += 1;
-        }        
-        i += 1;
+            merged[c] = *(arr2 + c2);
+            c2 += 1;
+            c += 1;
+        }
     }
-    while (i1 < l1) {
-        r_arr[i] = arr1[i1];
-        i1 += 1;
-        i += 1;
+    while (c < l1 + l2 && c1 < l1) {
+        merged[c] = *(arr1 + c1); 
+        c1 += 1;
+        c += 1;
     }
-    while (i2 < l2) {
-        r_arr[i] = arr1[i2];
-        i2 += 1;
-        i += 1;
+    while (c < l1 + l2 && c2 < l2) {
+        merged[c] = *(arr2 + c2); 
+        c2 += 1;
+        c += 1;
     }
-    return r_arr; 
+    for (int i = 0; i < l1 + l2; i++) {
+        *(arr1 + i) = merged[i]; 
+    }
 }
+
+void sort(int* arr, int n, int l, int r) {
+    if (l >= r) {
+        return; 
+    }
+    else {
+        int mid = l + (r - l) / 2; 
+        sort(arr, n, l, mid); 
+        sort(arr, n, mid+1, r); 
+        merge(arr + l, mid - l + 1, arr + mid + 1, r - mid); 
+    }
+}
+
+
