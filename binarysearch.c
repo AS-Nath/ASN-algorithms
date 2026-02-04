@@ -9,8 +9,11 @@ bool search(int* arr, int l, int r, int target) {
         }
         return false;
     }
-    int mid = l + (l - r) / 2;
-    if (arr[mid] < target) {
+    int mid = l + (r - l) / 2;
+    if (arr[mid] == target) {
+        return true; 
+    }
+    else if (arr[mid] < target) {
         return search(arr, mid + 1, r, target);
     }
     else {
@@ -41,6 +44,7 @@ int main(void) {
     printf("Enter the value to search : \n");
     int target;
     scanf("%d", &target); 
+    // User can enter in any order, the program will sort it. 
     qsort(arr, n, sizeof(int), comp);
     if (search(arr, 0, n - 1, target)) {
         printf("Found!\n");
