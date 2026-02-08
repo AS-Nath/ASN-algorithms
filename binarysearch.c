@@ -43,8 +43,9 @@ int main(void) {
     scanf("%d", &target); 
     // User can enter in any order, the program will sort it. 
     qsort(arr, n, sizeof(int), comp);
-    if (search(arr, 0, n - 1, target) > 0) {
-        printf("Found!\n");
+    int v = search(arr, 0, n - 1, target);
+    if (v > 0) {
+        printf("Found at index %d!\n", v);
     }   
     else {
         printf("Not Found!\n"); 
